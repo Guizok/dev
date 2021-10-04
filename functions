@@ -1,0 +1,52 @@
+//elementos que poderão ser editados
+$("h1, h2, h3, h4, h5, h6, p, .lead, .small, .fs-5").click(function() {
+
+    /*verifica se existe um elemento input como filho deste elemento, se sim,
+      significa que o elemento esta sendo editado */
+    if($(this).children("#inp_edit").prop("tagName") == undefined) {
+        let inp = $("<input >"); // cria o elemento input
+        let texto = $(this).text(); // atribui o texto do elemento à uma variável
+        let color = $(this).css("color"); // atribui à variável a propriedade color
+        let txt_algn = $(this).css("text-align"); // atribui à variável a propriedade text-align
+        let element = $(this).prop("tagName"); // atribui à variável o tipo de elemento, ex: A, INPUT, BUTTON e etc
+        let classe = $(this).prop("class"); // atribui à variável a propriedade class
+
+        //define atributos do elemento filho(input text)
+        inp.attr({
+          "type": "text",
+          "spellcheck": "false", // desabilita a correção de texto do input
+          "onfocus": "this.selectionStart = this.selectionEnd = this.value.length;", // coloca o cursor no final do texto do input
+          "value": texto, // insere o texto do elemento editado
+          "placeholder": "texto",
+          "id": "inp_edit"  //adiciona o id 'inp_edit' para identificar o elemento editado
+        });
+
+        // modifica o input para ficar transparent no elemento
+        inp.css({
+            "background-color": "transparent",
+            "color": color, // cor do elemento
+            "text-align": txt_algn, // alinhamento do elemento
+            "outline": "transparent", // cor do input ao clicar
+            "border": "0",
+            "width": "100%"
+        });
+
+        $(this).html("");
+        $(this).append(inp); //define o input como elemento filho
+        $(this).children("#inp_edit").focus(); // poem foco no input
+    }
+
+});
+
+//Evento chamado quando ocorre o click fora do elemento
+$("h1, h2, h3, h4, h5, h6, p, .lead, .small, .fs-5").focusout(function() {
+    let texto_inp = $(this).children("#inp_edit").val(); //texto que foi digitado
+
+    $(this).html(texto_inp); //insere o texto no elemento
+    $(this).children("input").addClass("d-none"); // esconde o elemento
+    $(this).children("input").remove(); //exclui o elemento
+
+    /* 
+        ajax para salvar as alterações
+    */
+});
