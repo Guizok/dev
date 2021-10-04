@@ -1,1 +1,1 @@
-Função que altera a propriedade color de um elemento html usando jquery.
+Funções para edição de elementos html usando Jquery.
